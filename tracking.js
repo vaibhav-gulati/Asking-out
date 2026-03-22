@@ -1,6 +1,4 @@
 (function () {
-  var DISCORD_WEBHOOK = typeof window !== "undefined" ? window.DISCORD_WEBHOOK : "";
-
   function isIndexPage() {
     var path = window.location.pathname;
     return path === "/" || path === "/index.html" || path.endsWith("/");
@@ -26,29 +24,23 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    var msg =
-      "**Ask Out**\nChoice: " +
-      choice +
-      "\nTime: " +
-      timeTaken +
-      " seconds" +
-      (landedAt ? "\nLanded: " + landedAt : "");
+    var data = new URLSearchParams();
+    data.append("form-name", "ask-out-log");
+    data.append("choice", choice);
+    data.append("time_taken_seconds", String(timeTaken));
+    data.append("landed_at", landedAt);
 
-    function go() {
-      window.location.href = targetUrl;
-    }
-
-    if (DISCORD_WEBHOOK && DISCORD_WEBHOOK.indexOf("discord.com/api/webhooks") !== -1) {
-      fetch(DISCORD_WEBHOOK, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: msg }),
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: data.toString(),
+    })
+      .then(function () {
+        window.location.href = targetUrl;
       })
-        .then(go)
-        .catch(go);
-    } else {
-      go();
-    }
+      .catch(function () {
+        window.location.href = targetUrl;
+      });
   }
 
   function wireLinks() {
