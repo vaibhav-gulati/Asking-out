@@ -1,6 +1,4 @@
 (function () {
-  var FORM_NAME = "ask-her-out-response";
-
   function isIndexPage() {
     var path = window.location.pathname;
     return path === "/" || path === "/index.html" || path.endsWith("/");
@@ -26,16 +24,14 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    var formData = new URLSearchParams();
-    formData.append("form-name", FORM_NAME);
-    formData.append("choice", choice);
-    formData.append("time_taken_seconds", String(timeTaken));
-    formData.append("landed_at", landedAt);
-
-    fetch("/", {
+    fetch("/.netlify/functions/track-response", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: formData.toString(),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        choice: choice,
+        time_taken_seconds: timeTaken,
+        landed_at: landedAt,
+      }),
       keepalive: true,
     }).catch(function () {});
 
