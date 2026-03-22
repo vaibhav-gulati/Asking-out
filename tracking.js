@@ -27,17 +27,13 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    fetch(FORMSPREE_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        choice: choice,
-        time_taken_seconds: timeTaken,
-        landed_at: landedAt,
-        _subject: "Ask Out - She clicked " + choice + " (" + timeTaken + "s)",
-      }),
-      keepalive: true,
-    }).catch(function () {});
+    var data = new URLSearchParams();
+    data.append("choice", choice);
+    data.append("time_taken_seconds", String(timeTaken));
+    data.append("landed_at", landedAt);
+    data.append("_subject", "Ask Out - She clicked " + choice + " (" + timeTaken + "s)");
+
+    navigator.sendBeacon(FORMSPREE_ENDPOINT, data);
 
     window.location.href = targetUrl;
   }
