@@ -1,6 +1,5 @@
 (function () {
-  // Replace with your Formspree form ID from https://formspree.io (create a form, get the ID from the endpoint)
-  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xnjgyrlj";
+  var TRACK_ENDPOINT = "/.netlify/functions/track-response";
 
   function isIndexPage() {
     var path = window.location.pathname;
@@ -34,7 +33,7 @@
       _subject: "Ask Out - She clicked " + choice + " (" + timeTaken + "s)",
     };
 
-    fetch(FORMSPREE_ENDPOINT, {
+    fetch(TRACK_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(payload),
