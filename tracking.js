@@ -24,24 +24,30 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    var data = new URLSearchParams();
-    data.append("form-name", "ask-out-log");
-    data.append("choice", choice);
-    data.append("time_taken_seconds", String(timeTaken));
-    data.append("landed_at", landedAt);
-    data.append("x", "");
+    var form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/form.html";
+    form.target = "netlify-form-frame";
+    form.style.display = "none";
 
-    fetch("/form.html", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: data.toString(),
-    })
-      .then(function () {
-        window.location.href = targetUrl;
-      })
-      .catch(function () {
-        window.location.href = targetUrl;
-      });
+    function add(name, value) {
+      var input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    }
+    add("form-name", "ask-out-log");
+    add("choice", choice);
+    add("time_taken_seconds", String(timeTaken));
+    add("landed_at", landedAt);
+    add("x", "");
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    window.location.href = targetUrl;
   }
 
   function wireLinks() {
