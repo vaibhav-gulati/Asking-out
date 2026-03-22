@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <form name="ask-her-out-response" netlify netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="choice" />
+      <input type="hidden" name="time_taken_seconds" />
+      <input type="hidden" name="landed_at" />
+      <input type="text" name="bot-field" style="display: none" />
+    </form>
     <div class="container">
       <div
         class="tenor-gif-embed"
@@ -25,7 +31,7 @@
         async
         src="https://tenor.com/embed.js"
       ></script>
-      <h1>DO you love me? Btaao na Tanya Ji 🤗</h1>
+      <h1>Do you like me? Btaao na Tanya Ji 🤗</h1>
       
 
       <div class="btn">
@@ -33,5 +39,6 @@
         <a href="no1.html">No</a>
       </div>
     </div>
+    <script src="./tracking.js"></script>
   </body>
 </html>
