@@ -1,4 +1,7 @@
 (function () {
+  // Replace with your Formspree form ID from https://formspree.io (create a form, get the ID from the endpoint)
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xnjgyrlj";
+
   function isIndexPage() {
     var path = window.location.pathname;
     return path === "/" || path === "/index.html" || path.endsWith("/");
@@ -24,13 +27,14 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    fetch("/.netlify/functions/track-response", {
+    fetch(FORMSPREE_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         choice: choice,
         time_taken_seconds: timeTaken,
         landed_at: landedAt,
+        _subject: "Ask Out - She clicked " + choice + " (" + timeTaken + "s)",
       }),
       keepalive: true,
     }).catch(function () {});
