@@ -29,8 +29,9 @@
     data.append("choice", choice);
     data.append("time_taken_seconds", String(timeTaken));
     data.append("landed_at", landedAt);
+    data.append("x", "");
 
-    fetch("/", {
+    fetch("/form.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: data.toString(),

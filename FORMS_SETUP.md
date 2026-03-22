@@ -17,6 +17,8 @@ Submissions use **Netlify Forms** – built into Netlify, no extra setup.
 
 ## If no submissions appear
 
-- Form detection must be on: Site configuration → Forms → Usage and configuration
-- Confirm the form is detected after deploy (may take a minute)
-- Check spam filters if you use email notifications
+1. **Check the Spam tab** – Netlify may flag test clicks as spam. In Forms → ask-out-log, use the menu above the list to switch to **Spam submissions**.
+
+2. **Form detection** – Site configuration → Forms → Usage and configuration → Form detection must be enabled.
+
+3. **Redeploy** – After adding the form, trigger a new deploy so Netlify detects it.
