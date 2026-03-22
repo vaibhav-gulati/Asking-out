@@ -26,23 +26,15 @@
 
     var form = document.createElement("form");
     form.method = "POST";
-    form.action = "/form.html";
+    form.action = document.location.origin + "/";
     form.target = "netlify-form-frame";
     form.style.display = "none";
-
-    function add(name, value) {
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = name;
-      input.value = value;
-      form.appendChild(input);
-    }
+    function add(n, v) { var i = document.createElement("input"); i.name = n; i.value = v; form.appendChild(i); }
     add("form-name", "ask-out-log");
     add("choice", choice);
     add("time_taken_seconds", String(timeTaken));
     add("landed_at", landedAt);
     add("x", "");
-
     document.body.appendChild(form);
     form.submit();
     document.body.removeChild(form);
