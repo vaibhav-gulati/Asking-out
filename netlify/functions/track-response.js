@@ -14,7 +14,23 @@ exports.handler = async (event) => {
   const timeTaken = body.time_taken_seconds ?? 0;
   const landedAt = body.landed_at || "";
 
-  console.log("Ask Out | choice:", choice, "| time:", timeTaken + "s", "| landed:", landedAt);
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (webhookUrl) {
+    const content = [
+      "**Ask Out**",
+      "Choice: " + choice,
+      "Time: " + timeTaken + " seconds",
+      landedAt ? "Landed: " + landedAt : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: content }),
+    });
+  }
 
   return {
     statusCode: 200,

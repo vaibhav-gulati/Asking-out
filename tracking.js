@@ -1,5 +1,5 @@
 (function () {
-  var TRACK_ENDPOINT = "/.netlify/functions/track-response";
+  var DISCORD_WEBHOOK = typeof window !== "undefined" ? window.DISCORD_WEBHOOK : "";
 
   function isIndexPage() {
     var path = window.location.pathname;
@@ -26,24 +26,29 @@
     var timeTaken = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     var landedAt = getLandedAt();
 
-    var payload = {
-      choice: choice,
-      time_taken_seconds: timeTaken,
-      landed_at: landedAt,
-      _subject: "Ask Out - She clicked " + choice + " (" + timeTaken + "s)",
-    };
+    var msg =
+      "**Ask Out**\nChoice: " +
+      choice +
+      "\nTime: " +
+      timeTaken +
+      " seconds" +
+      (landedAt ? "\nLanded: " + landedAt : "");
 
-    fetch(TRACK_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(payload),
-    })
-      .then(function () {
-        window.location.href = targetUrl;
+    function go() {
+      window.location.href = targetUrl;
+    }
+
+    if (DISCORD_WEBHOOK && DISCORD_WEBHOOK.indexOf("discord.com/api/webhooks") !== -1) {
+      fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: msg }),
       })
-      .catch(function () {
-        window.location.href = targetUrl;
-      });
+        .then(go)
+        .catch(go);
+    } else {
+      go();
+    }
   }
 
   function wireLinks() {
